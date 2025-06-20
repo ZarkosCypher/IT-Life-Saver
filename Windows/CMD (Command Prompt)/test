@@ -1,0 +1,5 @@
+# scan and repair currupted system files in windows 
+sfc /scannow
+
+# scan and repair windows file system files that may be dammagws or missing 
+DISM /Online /Cleanup-Image
