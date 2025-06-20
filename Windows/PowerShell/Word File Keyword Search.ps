@@ -1,1 +1,31 @@
+# This will show you if it found it in green and wont show anything if it did not find anything, you do need to copy and paste the whole scrip in to the terminal
+# Also it womt look in sub directorys (folders inside the current folder its looking in) so you will manualy need to have it loom through all the folders (I may make chnages to that in the future)
 
+# Set directory and keyword to search
+$searchDir = "C:\PATH\TO\YOUR\FOLDER\REAPLCE\ME"
+$keyword = "SEARCH_WORD_REPLACE_ME"
+
+# Load Word COM object
+$word = New-Object -ComObject Word.Application
+$word.Visible = $false
+
+# Loop through all .docx files
+Get-ChildItem -Path $searchDir -Filter *.docx | ForEach-Object {
+    $docPath = $_.FullName
+    try {
+        $doc = $word.Documents.Open($docPath, $false, $true)  # Open in read-only mode
+        $content = $doc.Content.Text
+
+        if ($content -match $keyword) {
+            Write-Host "Found '$keyword' in: $docPath" -ForegroundColor Green
+        }
+
+        $doc.Close()
+    } catch {
+        Write-Host "Failed to open: $docPath" -ForegroundColor Red
+    }
+}
+
+# Cleanup
+$word.Quit()
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($word) | Out-Null
