@@ -58,3 +58,27 @@ switch -Regex ($choice) {
         Write-Host "No files copied. Exiting." -ForegroundColor Yellow
     }
 }
+
+
+
+
+
+
+
+
+
+
+If you need to authenticate 
+
+# Store credentials (will prompt for username/password)
+$cred = Get-Credential
+
+# Map the network share temporarily
+New-PSDrive -Name "Z" -PSProvider FileSystem -Root "\\dcs124pw3dp.svc.ny.gov\NYS_BOOT\files" -Credential $cred -Persist
+
+# Copy files from the mounted drive
+Copy-Item -Path "Z:\*" -Destination "C:\YourDestination" -Recurse -Force
+
+# Optionally, remove the drive after
+Remove-PSDrive -Name "Z"
+
