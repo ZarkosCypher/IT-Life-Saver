@@ -25,7 +25,7 @@ $Urls = @(
 )
 
 # Set destination folder
-$DestinationFolder = "C:\Users\$env:USERNAME\Downloads\MultiDownloads"
+$DestinationFolder = "C:\Users\$env:USERNAME\Downloads\MultipleDownloads"
 
 # Create destination folder if it doesn't exist
 if (!(Test-Path -Path $DestinationFolder)) {
