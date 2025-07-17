@@ -1,0 +1,12 @@
+# Set "Do nothing" when closing the lid on battery
+powercfg /setacvalueindex SCHEME_CURRENT SUB_BUTTONS LidAction 0
+
+# Set "Do nothing" when closing the lid when plugged in
+powercfg /setdcvalueindex SCHEME_CURRENT SUB_BUTTONS LidAction 0
+
+# Apply the changes
+powercfg /SETACTIVE SCHEME_CURRENT
+
+
+# Verify changes
+powercfg /query SCHEME_CURRENT SUB_BUTTONS LidAction
