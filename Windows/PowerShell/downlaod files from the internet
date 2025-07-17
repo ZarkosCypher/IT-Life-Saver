@@ -1,0 +1,11 @@
+# This is so you can downlaod install files in bulk 
+
+$Url = "https://example.com/downloads/file.exe"
+$Destination = "C:\Users\$env:USERNAME\Downloads\file.exe"
+
+try {
+    Invoke-WebRequest -Uri $Url -OutFile $Destination -UseBasicParsing
+    Write-Host "✅ File downloaded to: $Destination" -ForegroundColor Green
+} catch {
+    Write-Host "❌ Download failed: $_" -ForegroundColor Red
+}
