@@ -9,3 +9,46 @@ try {
 } catch {
     Write-Host "❌ Download failed: $_" -ForegroundColor Red
 }
+
+
+
+
+
+
+
+# For multiple links 
+# List of URLs to download
+$Urls = @(
+    "https://example.com/downloads/file1.exe",
+    "https://example.com/downloads/file2.zip",
+    "https://example.com/downloads/file3.pdf"
+)
+
+# Set destination folder
+$DestinationFolder = "C:\Users\$env:USERNAME\Downloads\MultiDownloads"
+
+# Create destination folder if it doesn't exist
+if (!(Test-Path -Path $DestinationFolder)) {
+    New-Item -ItemType Directory -Path $DestinationFolder | Out-Null
+}
+
+# Loop through each URL and download
+foreach ($Url in $Urls) {
+    try {
+        # Extract file name from URL
+        $FileName = [System.IO.Path]::GetFileName($Url)
+
+        # Full path to save file
+        $DestinationPath = Join-Path -Path $DestinationFolder -ChildPath $FileName
+
+        # Download the file
+        Invoke-WebRequest -Uri $Url -OutFile $DestinationPath -UseBasicParsing
+
+        Write-Host "✅ Downloaded: $FileName" -ForegroundColor Green
+    } catch {
+        Write-Host "❌ Failed to download: $Url" -ForegroundColor Red
+        Write-Host $_.Exception.Message -ForegroundColor DarkRed
+    }
+}
+
+Write-Host "`n Done! Files saved to: $DestinationFolder" -ForegroundColor Cyan
