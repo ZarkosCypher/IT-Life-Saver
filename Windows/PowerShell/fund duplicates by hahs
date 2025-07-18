@@ -1,1 +1,35 @@
- 
+# Set the root directory to scan
+$RootPath = "C:\Path\To\Your\Folder"
+
+# Get all files, group them by filename
+$filesGroupedByName = Get-ChildItem -Path $RootPath -Recurse -File | Group-Object Name | Where-Object { $_.Count -gt 1 }
+
+# Hashtable to store duplicates
+$duplicates = @()
+
+# Loop through each group of files with the same name
+foreach ($group in $filesGroupedByName) {
+    $fileHashes = @{}
+
+    foreach ($file in $group.Group) {
+        try {
+            $hash = Get-FileHash -Path $file.FullName -Algorithm SHA256
+            if ($fileHashes.ContainsKey($hash.Hash)) {
+                # Found a duplicate by content
+                $duplicates += [PSCustomObject]@{
+                    FileName = $file.Name
+                    DuplicatePath = $file.FullName
+                    OriginalPath = $fileHashes[$hash.Hash]
+                    Hash = $hash.Hash
+                }
+            } else {
+                $fileHashes[$hash.Hash] = $file.FullName
+            }
+        } catch {
+            Write-Warning "Failed to hash: $($file.FullName) - $_"
+        }
+    }
+}
+
+# Output the duplicates found
+$duplicates | Format-Table -AutoSize
