@@ -1,0 +1,34 @@
+# It uses a delimiter of | 
+
+# Path to your names file
+$MappingFile = "C:\path\to\names.txt"
+
+# Path to the folder containing the files to rename
+$TargetFolder = "C:\path\to\files"
+
+# Read each line from the mapping file
+Get-Content $MappingFile | ForEach-Object {
+    # Skip empty lines
+    if ($_ -match "^\s*$") { return }
+
+    # Split into new name and old name
+    $parts = $_ -split "\|"
+    if ($parts.Count -ne 2) {
+        Write-Host "Skipping invalid line: $_" -ForegroundColor Yellow
+        return
+    }
+
+    $newName = $parts[0].Trim()
+    $oldName = $parts[1].Trim()
+
+    $oldPath = Join-Path $TargetFolder $oldName
+    $newPath = Join-Path $TargetFolder $newName
+
+    # Check if old file exists
+    if (Test-Path $oldPath) {
+        Rename-Item -Path $oldPath -NewName $newName
+        Write-Host "Renamed '$oldName' -> '$newName'" -ForegroundColor Green
+    } else {
+        Write-Host "File not found: $oldName" -ForegroundColor Red
+    }
+}
