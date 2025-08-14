@@ -18,17 +18,19 @@ Get-Content $MappingFile | ForEach-Object {
         return
     }
 
-    $newName = $parts[0].Trim()
-    $oldName = $parts[1].Trim()
+    $newNameBase = $parts[0].Trim()
+    $oldNameBase = $parts[1].Trim()
 
-    $oldPath = Join-Path $TargetFolder $oldName
-    $newPath = Join-Path $TargetFolder $newName
+    # Find the actual old file in the target folder (case-insensitive match)
+    $oldFile = Get-ChildItem -Path $TargetFolder | Where-Object {
+        $_.BaseName -ieq $oldNameBase
+    }
 
-    # Check if old file exists
-    if (Test-Path $oldPath) {
-        Rename-Item -Path $oldPath -NewName $newName
-        Write-Host "Renamed '$oldName' -> '$newName'" -ForegroundColor Green
+    if ($oldFile) {
+        $newFileName = "$newNameBase$($oldFile.Extension)"
+        Rename-Item -Path $oldFile.FullName -NewName $newFileName
+        Write-Host "Renamed '$($oldFile.Name)' -> '$newFileName'" -ForegroundColor Green
     } else {
-        Write-Host "File not found: $oldName" -ForegroundColor Red
+        Write-Host "File not found for: $oldNameBase" -ForegroundColor Red
     }
 }
