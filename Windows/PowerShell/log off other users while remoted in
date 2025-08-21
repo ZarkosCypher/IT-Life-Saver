@@ -1,7 +1,11 @@
+# Lists all logged in users 
 quser /server:COMPUTERNAME
 
+# Loggs off user selected bt session ID
 logoff SESSIONID /server:COMPUTERNAME
 
+
+# Script to log off mass amounts of users 
 $sessions = Get-RDUserSession
 foreach ($session in $sessions) {
 	Invoke-RDUserLogoff -HostServer $session.HostServer -UnifiedSessionID $session.UnifiedSessionId -Force
