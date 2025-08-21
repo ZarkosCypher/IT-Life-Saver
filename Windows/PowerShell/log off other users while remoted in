@@ -1,6 +1,6 @@
 quser /server:COMPUTERNAME
 
-logoff SESSIONID /server.COMPUTERNAME
+logoff SESSIONID /server:COMPUTERNAME
 
 $sessions = Get-RDUserSession
 foreach ($session in $sessions) {
