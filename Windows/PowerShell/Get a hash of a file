@@ -1,0 +1,2 @@
+# example of getting a sha256 hash of a file 
+Get-FileHash C:\Path\To\Your\File.iso -Algorithm SHA256
