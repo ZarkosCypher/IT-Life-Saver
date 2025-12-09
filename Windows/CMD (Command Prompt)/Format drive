@@ -8,6 +8,12 @@ clean
 
 create partition primary 
 
+select partition 1 
+
+active
+
+assighn 
+
 format fs=NTFS quick 
 
 assign 
