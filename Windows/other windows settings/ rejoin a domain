@@ -1,0 +1,10 @@
+log in using a local admin account 
+open settings > system > about (or search properties via start menue) > advanced system settings > computer tab 
+you will need to select change 
+select workgroup and type in a temp name EX: TEST
+click ok 
+restart your computer when prompted 
+
+then you will need to log back im using the same steps as above 
+and then you will need to select domain the second time areound and put in your domain info 
+ 
